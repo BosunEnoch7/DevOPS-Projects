@@ -7,18 +7,29 @@
 Server OS. 
 
 - Register an AWS accout if you have none
+
 ![Task 1.1](./images/Task%201.1.png)
 
 - Launch a new EC2 instance of t2.micro family with Ubuntu Server 20.04 LTS (HVM) on AWS.
+
 ![Task 1.2](./images/Task%201.2.png)
+
 ![Task 1.3](./images/Task%201.3.png)
+
 ![Task 1.4](./images/Task%201.4.png)
+
 - Connect to the instance on your local machine.
+
 ![Task1](./images/Task%201.5.png)
+
 ![Task1](./images/Task%201.7.png)
+
 ![Task](./images/Task%201.8.png)
+
 - You will have an outcome as this after a successful connection to your local machine
+
 ![TAsk1](./images/Task%201.9.png)
+
 ![Task1](./images/Task%201.10.png)
 
 # STEP 1 — INSTALLING APACHE AND UPDATING THE FIREWALL 
