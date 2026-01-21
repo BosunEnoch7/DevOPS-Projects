@@ -8,9 +8,11 @@ Server OS.
 
 - Register an AWS accout if you have none
 
-![Task 1.1](./Images/Task%201.1.png)
+![Task 1.1](./Images/Task%201.57.png)
 
 - Launch a new EC2 instance of t2.micro family with Ubuntu Server 20.04 LTS (HVM) on AWS.
+
+![TAsk1](./Images/Task%201.1.png)
 
 ![Task 1.2](./Images/Task%201.2.png)
 
