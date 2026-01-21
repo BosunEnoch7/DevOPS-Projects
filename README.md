@@ -1,4 +1,4 @@
-# LAMP STACK STACK IMPLEMENTATION IN AWS (Linux, Apache, MySQL, PHP) 
+# LAMP STACK IMPLEMENTATION IN AWS (Linux, Apache, MySQL, PHP) 
 
 **This document details the provisioning of a LAMP stack (Linux, Apache, MySQL and PHP) on an AWS EC2 instance. The setup process was executed as part of environment configuration, and the screenshots below serve as deployment artifacts, presented in the order they were captured during the stack initialization.**
 
@@ -14,23 +14,23 @@ Server OS.
 
 ![Task 1.2](./Images/Task%201.2.png)
 
-![Task 1.3](./images/Task%201.3.png)
+![Task 1.3](./Images/Task%201.3.png)
 
-![Task 1.4](./images/Task%201.4.png)
+![Task 1.4](./Images/Task%201.4.png)
 
 - Connect to the instance on your local machine.
 
-![Task1](./images/Task%201.5.png)
+![Task1](./Images/Task%201.5.png)
 
-![Task1](./images/Task%201.7.png)
+![Task1](./Images/Task%201.7.png)
 
-![Task](./images/Task%201.8.png)
+![Task](./Images/Task%201.8.png)
 
 - You will have an outcome as this after a successful connection to your local machine
 
-![TAsk1](./images/Task%201.9.png)
+![TAsk1](./Images/Task%201.9.png)
 
-![Task1](./images/Task%201.10.png)
+![Task1](./Images/Task%201.10.png)
 
 # STEP 1 — INSTALLING APACHE AND UPDATING THE FIREWALL 
 
@@ -38,13 +38,13 @@ Install Apache using Ubuntu’s package manager ‘apt’
 
 - Update a list of packages in package manager by running `sudo apt update`
 
-![Task1](./images/Task%201.13.png)
+![Task1](./Images/Task%201.13.png)
 - Run apache2 package installation `sudo apt install apache2`
 
-![Task](./images/Task%201.14.png)
+![Task](./Images/Task%201.14.png)
 - To verify that apache2 is running as a Service in our OS, use following command `sudo systemctl status apache2`
 
-![Task1](./images/Task%201.15.png)
+![Task1](./Images/Task%201.15.png)
 
 If it is green and running, then you did everything correctly – you have just launched your first 
 Web Server in the Clouds! 
@@ -54,15 +54,15 @@ default port that web browsers use to access web pages on the Internet
 As we know, we have TCP port 22 open by default on our EC2 machine to access it via SSH, so 
 we need to add a rule to EC2 configuration to open inbound connection through port 80: 
 
-![Task1](./images/Task%201.17.png)
+![Task1](./Images/Task%201.17.png)
 
-![TAsk1](./images/Task%201.18.png)
+![TAsk1](./Images/Task%201.18.png)
 
-![Task1](./images/Task%201.19.png)
+![Task1](./Images/Task%201.19.png)
 
 - First, let us try to check how we can access it locally in our Ubuntu shell, run: `curl http://localhost:80 ` or `curl http://<your-ip-address>`
 
-![Task1](./images/Task%201.16.png)
+![Task1](./Images/Task%201.16.png)
 
 - Now it is time for us to test how our Apache HTTP server can respond to requests from the 
 Internet. 
@@ -74,7 +74,7 @@ use following command:`curl -s http://169.254.169.254/latest/meta-data/public-ip
 If you see following page, then your web server is now correctly installed and accessible through 
 your firewall. 
 
-![Task1](./images/Task%201.20.png)
+![Task1](./Images/Task%201.20.png)
 In fact, it is the same content that you previously got by ‘curl’ command, but represented in 
 nice HTML formatting by your web browser.
 
