@@ -1,4 +1,4 @@
-# WEB STACK IMPLEMENTATION LEMP STACK (Linux,NGINX,MySQL and PHP)
+# WEB STACK IMPLEMENTATION, LEMP STACK (Linux,NGINX,MySQL and PHP)
 
 In this project, you will implement a similar stack, but with an alternative Web Server – 
 **NGINX,** which is also very popular and widely used by many websites on the Internet.
