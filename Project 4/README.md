@@ -77,9 +77,9 @@ Start & Enable MongoDB:
 sudo systemctl start mongod
 
 sudo systemctl enable mongod
-Start The server
 
 ```
+Start The server
 
 Check Status If Actively Running:
 
@@ -155,43 +155,66 @@ Create a file named **routes.js**
 Copy and paste the code below into routes.js
 
 ```
-var Book = require('./models/book');
-module.exports = function(app) {
-  app.get('/book', function(req, res) {
-    Book.find({}, function(err, result) {
-      if ( err ) throw err;
-      res.json(result);
+const express = require('express');
+const router = express.Router();
+
+const Book = require('./models/book'); // <-- correct path (apps/models/book.js)
+
+// GET all books
+router.get('/api/books', async (req, res) => {
+  try {
+    const books = await Book.find({}).sort({ _id: -1 });
+    return res.json(books);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST add a book
+router.post('/api/books', async (req, res) => {
+  try {
+    const { name, isbn, author, pages } = req.body;
+
+    if (!name || !isbn || !author || pages === undefined) {
+      return res.status(400).json({ error: 'name, isbn, author, pages are required' });
+    }
+
+    // prevent duplicate ISBN
+    const exists = await Book.findOne({ isbn: String(isbn).trim() });
+    if (exists) {
+      return res.status(409).json({ error: 'A book with this ISBN already exists' });
+    }
+
+    const book = await Book.create({
+      name: String(name).trim(),
+      isbn: String(isbn).trim(),
+      author: String(author).trim(),
+      pages: Number(pages),
     });
-  }); 
-  app.post('/book', function(req, res) {
-    var book = new Book( {
-      name:req.body.name,
-      isbn:req.body.isbn,
-      author:req.body.author,
-      pages:req.body.pages
-    });
-    book.save(function(err, result) {
-      if ( err ) throw err;
-      res.json( {
-        message:"Successfully added book",
-        book:result
-      });
-    });
-  });
-  app.delete("/book/:isbn", function(req, res) {
-    Book.findOneAndRemove(req.query, function(err, result) {
-      if ( err ) throw err;
-      res.json( {
-        message: "Successfully deleted the book",
-        book: result
-      });
-    });
-  });
-  var path = require('path');
-  app.get('*', function(req, res) {
-    res.sendfile(path.join(__dirname + '/public', 'index.html'));
-  });
-};
+
+    return res.status(201).json({ message: 'Successfully added book', book });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE by isbn
+router.delete('/api/books/:isbn', async (req, res) => {
+  try {
+    const isbn = String(req.params.isbn).trim();
+    const deleted = await Book.findOneAndDelete({ isbn });
+
+    if (!deleted) {
+      return res.status(404).json({ error: 'Book not found' });
+    }
+
+    return res.json({ message: 'Successfully deleted the book', book: deleted });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+module.exports = router;
 ```
 ![Task4](./Images/Task%204.16.png)
 
@@ -239,45 +262,137 @@ Add a file named **script.js**
  
 Copy and paste the Code below (controller configuration defined) into the script.js file.
 ```
-var app = angular.module('myApp', []);
-app.controller('myCtrl', function($scope, $http) {
-  $http( {
-    method: 'GET',
-    url: '/book'
-  }).then(function successCallback(response) {
-    $scope.books = response.data;
-  }, function errorCallback(response) {
-    console.log('Error: ' + response);
-  });
-  $scope.del_book = function(book) {
-    $http( {
-      method: 'DELETE',
-      url: '/book/:isbn',
-      params: {'isbn': book.isbn}
-    }).then(function successCallback(response) {
-      console.log(response);
-    }, function errorCallback(response) {
-      console.log('Error: ' + response);
-    });
-  };
-  $scope.add_book = function() {
-    var body = '{ "name": "' + $scope.Name + 
-    '", "isbn": "' + $scope.Isbn +
-    '", "author": "' + $scope.Author + 
-    '", "pages": "' + $scope.Pages + '" }';
-    $http({
+const form = document.getElementById('bookForm');
+const msg = document.getElementById('msg');
+const tbody = document.getElementById('tbody');
+const addBtn = document.getElementById('addBtn');
+const search = document.getElementById('search');
+
+let allBooks = [];
+
+function setMsg(text, type) {
+  msg.textContent = text || '';
+  msg.className = 'msg ' + (type || '');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (m) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
+function render(books) {
+  if (!books.length) {
+    tbody.innerHTML = `<tr><td colspan="5">No books yet.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = books.map(b => `
+    <tr>
+      <td>${escapeHtml(b.name ?? '')}</td>
+      <td>${escapeHtml(b.isbn ?? '')}</td>
+      <td>${escapeHtml(b.author ?? '')}</td>
+      <td>${escapeHtml(b.pages ?? '')}</td>
+      <td class="actions">
+        <button data-isbn="${escapeHtml(b.isbn)}">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function loadBooks() {
+  try {
+    const res = await fetch('/api/books');
+    const data = await res.json();
+    allBooks = Array.isArray(data) ? data : [];
+    applySearch();
+  } catch (e) {
+    tbody.innerHTML = `<tr><td colspan="5">Failed to load books.</td></tr>`;
+  }
+}
+
+function applySearch() {
+  const q = (search.value || '').toLowerCase().trim();
+  if (!q) return render(allBooks);
+
+  const filtered = allBooks.filter(b =>
+    String(b.name || '').toLowerCase().includes(q) ||
+    String(b.author || '').toLowerCase().includes(q) ||
+    String(b.isbn || '').toLowerCase().includes(q)
+  );
+  render(filtered);
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  setMsg('');
+
+  const name = document.getElementById('name').value.trim();
+  const isbn = document.getElementById('isbn').value.trim();
+  const author = document.getElementById('author').value.trim();
+  const pages = Number(document.getElementById('pages').value);
+
+  if (!name || !isbn || !author || !pages) {
+    setMsg('Please fill all fields correctly.', 'err');
+    return;
+  }
+
+  addBtn.disabled = true;
+  addBtn.textContent = 'Adding...';
+
+  try {
+    const res = await fetch('/api/books', {
       method: 'POST',
-      url: '/book',
-      data: body
-    }).then(function successCallback(response) {
-      console.log(response);
-    }, function errorCallback(response) {
-      console.log('Error: ' + response);
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, isbn, author, pages })
     });
-  };
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setMsg(data.error || 'Failed to add book.', 'err');
+    } else {
+      setMsg('Book added successfully ✅', 'ok');
+      form.reset();
+      await loadBooks();
+    }
+  } catch (err) {
+    setMsg('Network error while adding book.', 'err');
+  } finally {
+    addBtn.disabled = false;
+    addBtn.textContent = 'Add Book';
+  }
 });
+
+tbody.addEventListener('click', async (e) => {
+  const btn = e.target.closest('button[data-isbn]');
+  if (!btn) return;
+
+  const isbn = btn.getAttribute('data-isbn');
+  if (!confirm(`Delete book with ISBN ${isbn}?`)) return;
+
+  try {
+    const res = await fetch(`/api/books/${encodeURIComponent(isbn)}`, {
+      method: 'DELETE'
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      setMsg(data.error || 'Failed to delete book.', 'err');
+    } else {
+      setMsg('Book deleted ✅', 'ok');
+      await loadBooks();
+    }
+  } catch (err) {
+    setMsg('Network error while deleting.', 'err');
+  }
+});
+
+search.addEventListener('input', applySearch);
+
+// initial load
+loadBooks();
 ```
-![Task4](./Images/Task%204.18.png)
+![Task4](./Images/Task%204.18.png) 
 
 In the **public** folder, create a file named **index.html**;
 
@@ -289,58 +404,95 @@ In the **public** folder, create a file named **index.html**;
 Copy and paste the code below into **index.html** file.
 ```
 <!doctype html>
-<html ng-app="myApp" ng-controller="myCtrl">
-  <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script src="script.js"></script>
-  </head>
-  <body>
-    <div>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Books</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f6f7fb; margin:0; }
+    .wrap { max-width: 900px; margin: 40px auto; padding: 0 16px; }
+    .card { background:#fff; border-radius:12px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,.08); }
+    h1 { margin: 0 0 14px; font-size: 50px; }
+    .grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; }
+    .grid label { font-size: 12px; color:#333; display:block; margin-bottom:6px; }
+    input { width:100%; padding:10px; border:1px solid #d7dbe7; border-radius:10px; outline:none; }
+    input:focus { border-color:#6b7cff; }
+    .row { display:flex; gap:10px; align-items:flex-end; margin-top: 12px; }
+    button { padding:10px 14px; border:none; border-radius:10px; background:#2d5bff; color:#fff; cursor:pointer; }
+    button:disabled { opacity:.6; cursor:not-allowed; }
+    .msg { margin-top: 10px; font-size: 13px; }
+    .msg.ok { color: #0a7a2f; }
+    .msg.err { color: #b00020; }
+
+    table { width:100%; border-collapse: collapse; margin-top: 14px; }
+    th, td { text-align:left; padding:10px; border-bottom: 1px solid #eef0f6; font-size: 14px; }
+    th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color:#556; }
+    .actions button { background:#ff3b30; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .search { max-width: 260px; }
+    @media (max-width: 760px){
+      .grid { grid-template-columns: 1fr 1fr; }
+      .topbar { flex-direction: column; align-items: stretch; }
+      .search { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <h1>📚 Book Manager</h1>
+        <input class="search" id="search" placeholder="Search by name / author / isbn..." />
+      </div>
+
+      <form id="bookForm">
+        <div class="grid" style="margin-top:12px;">
+          <div>
+            <label for="name">Name</label>
+            <input id="name" required />
+          </div>
+          <div>
+            <label for="isbn">ISBN</label>
+            <input id="isbn" required />
+          </div>
+          <div>
+            <label for="author">Author</label>
+            <input id="author" required />
+          </div>
+          <div>
+            <label for="pages">Pages</label>
+            <input id="pages" type="number" min="1" required />
+          </div>
+        </div>
+        <div class="row">
+          <button id="addBtn" type="submit">Add Book</button>
+          <div id="msg" class="msg"></div>
+        </div>
+      </form>
+
       <table>
-        <tr>
-          <td>Name:</td>
-          <td><input type="text" ng-model="Name"></td>
-        </tr>
-        <tr>
-          <td>Isbn:</td>
-          <td><input type="text" ng-model="Isbn"></td>
-        </tr>
-        <tr>
-          <td>Author:</td>
-          <td><input type="text" ng-model="Author"></td>
-        </tr>
-        <tr>
-          <td>Pages:</td>
-          <td><input type="number" ng-model="Pages"></td>
-        </tr>
-      </table>
-      <button ng-click="add_book()">Add</button>
-    </div>
-    <hr>
-    <div>
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Isbn</th>
-          <th>Author</th>
-          <th>Pages</th>
- 
-        </tr>
-        <tr ng-repeat="book in books">
-          <td>{{book.name}}</td>
-          <td>{{book.isbn}}</td>
-          <td>{{book.author}}</td>
-          <td>{{book.pages}}</td>
- 
-          <td><input type="button" value="Delete" data-ng-click="del_book(book)"></td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>ISBN</th>
+            <th>Author</th>
+            <th>Pages</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="5">Loading...</td></tr>
+        </tbody>
       </table>
     </div>
-  </body>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
 ```
 ![Task4](./Images/Task%204.19.png)
-
 Change the directory back up to **Books**
 
 ``cd ..``
@@ -390,4 +542,10 @@ Your security group shall look like this:
 Now you can access our Book Register web application from the Internet with a browser using a Public IP address or Public DNS name.
 
 This is how your WebBook Register Application will look in the browser:
-![Task4](./Images/Task%204.22.png)
+![Task4](./Images/Task%204.23.png)
+
+Adding Books
+![Task4](./Images/Task%204.24.png)
+
+Deleting Books
+![Task4](./Images/Task%204.25.png) 
