@@ -26,6 +26,7 @@
 
 - Then install the mysql-server package:  
 `sudo apt install mysql-server`
+
 ![alt](./Images/Task%205.2.png) 
 - Ensure that the server is running using the systemctl command:  
 `sudo systemctl start mysql.service`
