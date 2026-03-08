@@ -149,17 +149,21 @@ BalancerMember http://Web2:80 loadfactor=5 timeout=1
 BalancerMember http://Web3:80 loadfactor=5 timeout=1
 ```
 ![Task8](./Images/Task%208.11.png)
+
 You can try to `curl `your Web Servers from LB locally `curl http://Web1`, `curl http://Web2` or `curl http://Web3` – it shall work.
 
 ![Task8](./Images/Task%208.12.png)
 
 Remember, this is only an internal configuration and it is also local to your LB server, these names will neither be ‘resolvable’ from other servers internally nor from the Internet.
+
 ![Task8](./Images/Task%208.13.png)
 
 ![Task8](./Images/Task%208.14.png)
 
 ### Target Architecture
 Now your set-up looks like this:
+
  ![Task8](./Images/Task%208.02.png)
+
 ### Congratulations!
 You have just implemented a Load balancing Web Solution for your DevOps team.
