@@ -13,14 +13,13 @@ account and create a new EC2 Instance of **t2.nano** family with **Ubuntu Server
 (HVM) image. Remember, you can have multiple EC2 instances, but make sure you STOP 
 the ones you are not working with at the moment to save available free hours.
 
-![Task2](./Image/Task%202.1.png)
-![Task2](./Image/Task%202.2.png)
-![Task2](./Image/Task%202.3.png)
-![Task2](./Image/Task%202.3.png)
+![Task2](./Images/Task%202.1.png)
+![Task2](./Images/Task%202.2.png)
+![Task2](./Images/Task%202.3.png)
 
 Now, ssh to connect to your local device
-![Task2](./Image/Task%202.4.png)
-![Task2}](./Image/Task%202.5.png)
+![Task2](./Images/Task%202.4.png)
+![Task2](./Images/Task%202.5.png)
 
 
 ## STEP 1 – INSTALLING THE NGINX WEB SERVER 
@@ -33,18 +32,18 @@ package index. Following that, you can use apt install to get Nginx installed:
 
 `sudo apt update`
 
-![Task2](./Image/Task%202.6.png)
+![Task2](./Images/Task%202.6.png)
 `sudo apt install nginx`
 
 When prompted, enter Y to confirm that you want to install Nginx. Once the installation is 
 finished, the Nginx web server will be active and running on your Ubuntu 20.04 server. 
 
-![Task2](./Image/Task%202.7.png)
+![Task2](./Images/Task%202.7.png)
 
 - To verify that nginx was successfully installed and is running as a service in Ubuntu, run: 
 `sudo systemctl status nginx`
 
-![Task2](./Image/Task%202.8.png)
+![Task2](./Images/Task%202.8.png)
 If it is green and running, then you did everything correctly – you have just launched your 
 first Web Server in the Clouds! 
 
@@ -62,7 +61,7 @@ means ‘from any IP address’).
 or 
 curl http://127.0.0.1:80`
 
-![Task2](./Image/Task%202.11.png)
+![Task2](./Images/Task%202.11.png)
 These 2 commands above actually do pretty much the same – they use ‘curl’ command to 
 request our Nginx on port 80 (actually you can even try to not specify any port – it will work 
 anyway). The difference is that: in the first case we try to access our server via DNS name 
@@ -70,13 +69,13 @@ and in the second one – by IP address (in this case IP address 127.0.0.1 corre
 DNS name ‘localhost’ and the process of converting a DNS name to IP address is called 
 "resolution"). We will touch DNS in further lectures and projects. 
 
-![Task](./Image/Task%202.9.png)
-![Task2](./Image/Task%202.10.png)
+![Task](./Images/Task%202.9.png)
+![Task2](./Images/Task%202.10.png)
 
 - Now it is time for us to test how our Nginx server can respond to requests from the Internet. 
 
 - Open a web browser of your choice and try to access following url `http://<Public-IP-Address>:80`
-![TAsk](./Image/Task%202.12.png)
+![TAsk](./Images/Task%202.12.png)
 
 Another way to retrieve your Public IP address, other than to check it in AWS Web console, 
 is to use following command: 
@@ -104,7 +103,7 @@ within PHP environments, so we will use it in our project.
  
 `sudo apt install mysql-server `
 
-![Task2](./Image/Task%202.13.png)
+![Task2](./Images/Task%202.13.png)
 When prompted, confirm installation by typing Y, and then ENTER. 
 
 - When the installation is finished, log in to the MySQL console by typing: `Sudo mysql `
@@ -122,13 +121,13 @@ password as **PassWord.1.**
 'PassWord.1';`
 
 - Exit the MySQL shell with: `exit`
-![Task2](./Image/Task%202.14.png)
+![Task2](./Images/Task%202.14.png)
 - Start the interactive script by running: `sudo mysql_secure_installation`
 
 This will ask if you want to configure the VALIDATE PASSWORD PLUGIN. 
 
 Answer Y for yes, or anything else to continue without enabling. 
-![Task2](./Image/Task%202.15.png)
+![Task2](./Images/Task%202.15.png)
 - Regardless of whether you choose to set up the **VALIDATE PASSWORD PLUGIN**, your 
 server will next ask you to select and confirm a password for the MySQL root user. This is 
 not to be confused with the system root. The database root user is an administrative user 
@@ -141,7 +140,7 @@ in a moment.
 password you just entered and your server will ask if you want to continue with that 
 password. If you are happy with your current password, enter Y for “yes” 
 
-![Task2](./Image/Task%202.15.png)
+![Task2](./Images/Task%202.16.png)
 - When you’re finished, test if you’re able to log in to the MySQL console by typing:`sudo mysql -p`
 
 - Notice the -p flag in this command, which will prompt you for the password used after 
@@ -150,7 +149,6 @@ changing the root user password.
 -  To exit the MySQL console, type: 
 `mysql> exit`
 
-![Task2](./Image/Task%202.16.png)
 ## STEP 3 – INSTALLING PHP 
 
 - You have Nginx installed to serve your content and MySQL installed to store and manage 
@@ -172,7 +170,7 @@ installed as dependencies.
 
 When prompted, type Y and press ENTER to confirm installation. 
 
-![Task2](./Image/Task%202.17.png)
+![Task2](./Images/Task%202.17.png)
 You now have your PHP components installed. Next, you will configure Nginx to use them.
 
 ## STEP 4 — CONFIGURING NGINX TO USE PHP PROCESSOR
@@ -248,7 +246,7 @@ which declares what socket is associated with php-fpm.
 not process. By adding the deny all directive, if any .htaccess files happen to find their 
 way into the document root, they will not be served to visitors.
 
-![Task2](./Image/Task%202.18.png)
+![Task2](./Images/Task%202.18.png)
 When you’re done editing, save and close the file. If you’re using **nano**, you can do so by 
 typing **CTRL+X** and then **y** and ENTER to confirm. 
 
@@ -261,7 +259,7 @@ configuration for syntax errors by typing:
 
 - You shall see following message: 
 
-![Task2](./Image/Task%202.19.png)
+![Task2](./Images/Task%202.19.png)
 - If any errors are reported, go back to your configuration file to review its contents before 
 continuing. 
 
@@ -285,7 +283,7 @@ up an index.php file to replace it. Once you do that, remember to remove or rena
 index.html file from your document root, as it would take precedence over an index.php file by 
 default. 
 
-![Task2](./Image/Task%202.20.png)
+![Task2](./Images/Task%202.20.png)
 
 Your LEMP stack is now fully configured. In the next step, we’ll create a PHP script to test 
 that Nginx is in fact able to handle .php files within your newly configured website. 
@@ -307,13 +305,13 @@ information about your server:
 phpinfo();
 ?>`
 
-![Task2](./Image/Task%202.22.png)
+![Task2](./Images/Task%202.22.png)
 - You can now access this page in your web browser by visiting the domain name or public IP 
 address you’ve set up in your Nginx configuration file, followed by /info.php: `http://server_domain_or_IP/info.php `
 
 You will see a web page containing detailed information about your server: 
 
-![Task2](./Image/Task%202.23.png)
+![Task2](./Images/Task%202.23.png)
 
 After checking the relevant information about your PHP server through that page, it’s best to 
 remove the file you created as it contains sensitive information about your PHP environment 
@@ -359,7 +357,7 @@ BY 'password';`
 while preventing this user from creating or modifying other databases on your server. 
 Now exit the MySQL shell with: `mysql> exit`
 
-![Task2](./Image/Task%202.24.png)
+![Task2](./Images/Task%202.24.png)
 - You can test if the new user has the proper permissions by logging in to the MySQL console 
 again, this time using the custom user credentials: `mysql -u example_user -p`
 
@@ -367,7 +365,7 @@ again, this time using the custom user credentials: `mysql -u example_user -p`
 - Notice the -p flag in this command, which will prompt you for the password used when 
 creating the example_user user. After logging in to the MySQL console, confirm that you have 
 access to the example_database database: `mysql> SHOW DATABASES;`
-![Task2](./Image/Task%202.25.png)
+![Task2](./Images/Task%202.25.png)
 This will give you the following output: 
 
 - Next, we’ll create a test table named **todo_list.** From the MySQL c`onsole, run the following 
@@ -380,7 +378,7 @@ CREATE TABLE todo_list (
 );
 ```
 
-![Task2](./Image/Task%202.26.png)
+![Task2](./Images/Task%202.26.png)
 - Insert a few rows of content in the test table. You might want to repeat the next command a 
 few times, using different VALUES: 
 `mysql> INSERT INTO example_database.todo_list (content) VALUES ("My first important 
@@ -389,7 +387,7 @@ item"); `
 - To confirm that the data was successfully saved to your table, run: `mysql> SELECT * FROM example_database.todo_list;` 
 
 You’ll see the following output: 
-![Task2](./Image/Task%202.27.png)
+![Task2](./Images/Task%202.27.png)
 
 - After confirming that you have valid data in your test table, you can exit the MySQL console: 
 `mysql> exit`
@@ -426,14 +424,14 @@ try {
 }
 ```
 
-![Task2](./Image/Task%202.28.png)
+![Task2](./Images/Task%202.28.png)
 Save and close the file when you are done editing. 
 
 You can now access this page in your web browser by visiting the domain name or public IP 
 address configured for your website, followed by /todo_list.php: 
 `http://<Public_domain_or_IP>/todo_list.php`
 
-![Task2](./Image/Task%202.29%20docker.png)
+![Task2](./Images/Task%202.29%20docker.png)
 
 If you are seeing this as well, it means means your PHP script is trying to connect to MySQL using PDO, but the required PDO MySQL driver is missing from your system.
 
@@ -441,16 +439,16 @@ What you need to do is to install the PHP extension that enables PDO to talk to 
 
 Replace `8.2` with your actual PHP version if different.
 
-![Task2](./Image/Task%202.30%20TB.png)
+![Task2](./Images/Task%202.30%20TB.png)
 
 Then restart PHP-FPM and Nginx: `sudo systemctl restart php8.2-fpm
 sudo systemctl restart nginx`
 
-![Task2](./Image/Task%202.31%20TB.png)
+![Task2](./Images/Task%202.31%20TB.png)
 
 Now, reload your broswer, you should have this
 
-![Task2](./Image/Task%202.32.png)
+![Task2](./Images/Task%202.32.png)
 
 You should see a page like this, showing the content you’ve inserted in your test table:
 
