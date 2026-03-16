@@ -152,7 +152,7 @@ Webhook will trigger a new job and in the "Console Output" of the job you will f
 Finished: SUCCESS
 ```
 ![Task9](./Images/Task%209.33.png)
-In my case, It shows **UNSTABLE**, 
+In my case, It shows **UNSTABLE**,
 
 The issue is; My pipeline is already working up to the transfer stage. The only remaining issue is that
 ec2-user does not have permission to write into `/mnt/apps`
@@ -163,7 +163,7 @@ sudo chown -R ec2-user:ec2-user /mnt/apps
 sudo chmod -R 755 /mnt/apps
 ``` 
 ![Task9](./Images/Task%209.34.png)
-- Then push a small change again.
+- Then push a small change/changes again.
 ![Task9](./Images/Task%209.35.png)
 
 To make sure that the files in /mnt/apps have been updated – connect via SSH/Putty to your NFS server and check ***README.MD*** file
