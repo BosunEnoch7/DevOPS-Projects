@@ -56,6 +56,7 @@ sudo systemctl status jenkins --no-pager
 5.	Perform initial Jenkins setup.
 From your browser access ```http://<Jenkins-Server-Public-IP-Address-or-Public-DNS-Name>:8080```
 You will be prompted to provide a default admin password
+
 ![Task9](./Images/Task%209.5.png)
 
 Retrieve it from your server:
@@ -172,6 +173,7 @@ cat /mnt/apps/README.md | grep "your exact changes"
 ```
 I used the grep command to filter the exact changes/text I updated the ***README.md*** file
 ![Task9](./Images/Task%209.36.png)
+
 If you see the changes you had previously made in your GitHub like mine – the job works as expected.
 **Congratulations!**
 
