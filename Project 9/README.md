@@ -57,7 +57,7 @@ sudo systemctl status jenkins --no-pager
 From your browser access ```http://<Jenkins-Server-Public-IP-Address-or-Public-DNS-Name>:8080```
 You will be prompted to provide a default admin password
 
-![Task9](./Images/Task%209.5.png)
+![Task9](./Images/Task%209.5.png) 
 
 Retrieve it from your server:
 ```
