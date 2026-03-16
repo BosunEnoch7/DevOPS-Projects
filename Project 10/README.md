@@ -128,6 +128,7 @@ Click on the padlock icon and you can see the details of the certificate issued 
 
 By default, LetsEncrypt certificate is valid for 90 days, so it is recommended to renew it at least every 60 days or more frequently.
 You can test renewal command in `dry-run` mode
+
 ```
 sudo certbot renew --dry-run
 ```
