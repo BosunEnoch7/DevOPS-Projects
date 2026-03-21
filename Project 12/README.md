@@ -192,6 +192,7 @@ The entire folder structure should look like below, but if you create it manuall
 ![Task12](./Images/Task%2012.22.5.png)
 
 After removing unnecessary directories and files, the roles structure should look like this
+```
 └── webserver
     ├── README.md
     ├── defaults
@@ -203,7 +204,7 @@ After removing unnecessary directories and files, the roles structure should loo
     ├── tasks
     │   └── main.yml
     └── templates
-
+```
 15.	Update your inventory `ansible-config-mgt/inventory/uat.yml` file with IP addresses of your 2 UAT Web servers
 ```
 [uat-webservers]
@@ -296,8 +297,10 @@ sudo ansible-playbook -i /home/ubuntu/ansible-config-mgt/inventory/uat.yml /home
 ```
 I encounterd this issue;
 ![Task12](./Images/Task%2012.28.png)
+
 I troubleshooted as follow;
 ![Task12](./Images/Task%2012.29.png)
+
 Now the issue is resolved, that reconfiguration.
 ![Task12](./Images/Task%2012.30.png)
 ![Task12](./Images/Task%2012.31.png)
@@ -314,6 +317,7 @@ or
 ![Task12](./Images/Task%2012.33.png)
 
 Your Ansible architecture now looks like this:
+
  ![Task12](./Images/Task%2012.34.png)
 
 
