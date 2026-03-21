@@ -19,29 +19,40 @@ sudo mkdir /home/ubuntu/ansible-config-artifact
 ```
 
 2.	Change permissions to this directory, so Jenkins could save files there – `chmod -R 0777 /home/ubuntu/ansible-config-artifact`
+
 ![Task12](./Images/Task%2012.1.png)
 3.	Go to Jenkins web console -> Manage Jenkins -> Manage Plugins -> on Available tab search for Copy Artifact and install this plugin without restarting Jenkins
+
  ![Task12](./Images/Task%2012.2.png)
-4.	Create a new Freestyle project (you have done it in Project 9) and name it save_artifacts.
+4.	Create a new Freestyle project (you have done it in Project 9) and name it *save_artifacts*.
+
 ![Task12](./Images/Task%2012.3.png)
 
 5.	This project will be triggered by completion of your existing ansible project. Configure it accordingly:
+
  ![Task12](./Images/Task%2012.4.png)
 **Note:** You can configure number of builds to keep in order to save space on the server, for example, you might want to keep only last 2 or 5 build results. You can also make this change to your ansible job.
+
 ![Task12](./Images/Task%2012.5.png)
 
 6.	The main idea of save_artifacts project is to save artifacts into `/home/ubuntu/ansible-config-artifact` directory. To achieve this, create a Build step and choose Copy artifacts from other project, specify ansible as a source project and `/home/ubuntu/ansible-config-artifact` as a target directory.
+
  ![Task12](./Images/Task%2012.6.png)
 
 7.	Test your set up by making some change in README.MD file inside your ansible-config-mgt repository (right inside master branch).
 
 **HERE**, mine wasn't successful
+
 ![Task12](./Images/Task%2012.7.png)
+
 **Let's troubleshoot**
 
 Run these commands acc ordinly as shown in the image.
+
 ![Task12](./Images/Task%2012.9.png)
+
 The we have the job successful and artifacts saved from ansible job
+
 ![Task12](./Images/Task%2012.8.png)
 
 Since both Jenkins jobs have completed one after another – you shall see your files inside `/home/ubuntu/ansible-config-artifact `directory and it will be updated with every commit to your master branch.
@@ -53,6 +64,7 @@ Now your Jenkins pipeline is more neat and clean.
 **Step 2 – Refactor Ansible code by importing other playbooks into `site.yml`**
 
 Before starting to refactor the codes, ensure that you have pulled down the latest code from master (main) branch, and created a new branch, name it `refactor`.
+
 ![Task12](./Images/Task%2012.11.png)
 
 DevOps philosophy implies constant iterative improvement for better efficiency – refactoring is one of the techniques that can be used, but you always have an answer to question "why?". Why do we need to change something if it works well?
@@ -136,8 +148,11 @@ ansible-playbook -i inventory/dev.yml playbooks/site.yaml
 ```
 ![Task12](./Images/Task%2012.16.png)
 From the image above, some webservers aren't reachable, lets **troubleshoot** that.
+
 ![Task12](./Images/Task%2012.17.png)
+
 In image above, I edited **wireshark-qt** to **delete wireshark** as it supposed to be.
+
 ![Task12](./Images/Task%2012.18.png)
 Now we have all reached.
 
@@ -153,6 +168,7 @@ Now you have learned how to use **import_playbooks** module and you have a ready
 We have our nice and clean `dev` environment, so let us put it aside and configure 2 new Web Servers as `uat`. We could write tasks to configure Web Servers in the same playbook, but it would be too messy, instead, we will use a dedicated role to make our configuration reusable.
 
 13.	Launch 2 fresh EC2 instances using RHEL 8 image, we will use them as our uat servers, so give them names accordingly – **Web1-UAT** and **Web2-UAT**.
+
 ![Task12](./Images/Task%2012.20.png)
 
 14.	To create a role, you must create a directory called `roles/`, relative to the playbook file or in `/etc/ansible/` directory.
@@ -167,7 +183,9 @@ ansible-galaxy init webserver
 - Create the directory/files structure manually
 
 **Note:** You can choose either way, but since you store all your codes in GitHub, it is recommended to create folders and files there rather than locally on Jenkins-Ansible server.
+
 ![Task12](./Images/Task%2012.21.png)
+
 The entire folder structure should look like below, but if you create it manually – you can skip creating `tests`, `files`, and `vars`or remove them if you used `ansible-galaxy`
 ```
 └── webserver
@@ -296,12 +314,15 @@ Now run the playbook against your uat inventory and see what happens:
 sudo ansible-playbook -i /home/ubuntu/ansible-config-mgt/inventory/uat.yml /home/ubuntu/ansible-config-mgt/playbooks/site.yaml
 ```
 I encounterd this issue;
+
 ![Task12](./Images/Task%2012.28.png)
 
 I troubleshooted as follow;
+
 ![Task12](./Images/Task%2012.29.png)
 
 Now the issue is resolved, that reconfiguration.
+
 ![Task12](./Images/Task%2012.30.png)
 ![Task12](./Images/Task%2012.31.png)
 
@@ -316,10 +337,9 @@ or
 
 ![Task12](./Images/Task%2012.33.png)
 
-Your Ansible architecture now looks like this:
+Your Ansible architecture now looks like this below:
 
  ![Task12](./Images/Task%2012.34.png)
-
 
 ### Congratulations!
 You have learned how to deploy and configure UAT Web Servers using Ansible imports and roles!
