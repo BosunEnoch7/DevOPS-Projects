@@ -95,7 +95,8 @@ Now paste the instruction below into the `env-vars.yml` file.
         - always
 ```
 ![Task13](./Images/Task%2013.4.png)
-Notice 3 things to notice here:
+
+**Notice 3 things to notice here:**
 1.	We used `include_vars` syntax instead of `include`, this is because Ansible developers decided to separate different features of the module. From Ansible version 2.8, the include module is deprecated and variants of `include_*` must be used. These are:
 
 - [include_role](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_role_module.html)
