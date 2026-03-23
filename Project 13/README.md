@@ -195,6 +195,7 @@ With your experience on Ansible so far you can:
 - Update both assignment and site.yml files respectively.
 ![Task13](./Images/Task%2013.10.png)
 ![Task13](./Images/Task%2013.11.png)
+
 ***loadbalancers.yml*** file
 ```
 - hosts: lb
@@ -224,26 +225,34 @@ While testing, I encountered this failure in execution,
 ![Task13](./Images/Task%2013.13.png)
 
 ### ***Here is how I troubleshooted!***
+
 - I tried to reconfigure `playbooks/site.yml`
+
 ![Task13](./Images/Task%2013.14.png)
 
 - Tried testing again but the issue seems it's yet to be completely resolved.
+
 ![Task13](./Images/Task%2013.15.png)
 
 - Then I try reconfigure `static-assignments/websevers.yml`
+
 ![Task13](./Images/Task%2013.16.png)
 
 - Again, I checked the `playbooks/site.yml` and reconfigured it to this
+
 ![Task13](./Images/Task%2013.17.png)
 
 - Testing again, and this is the outcome but still haven't completely ran the tasks
+
 ![Task13](./Images/Task%2013.18.png)
 
 - Then, I needed to check `dynamic-assignments/env-vars.yml` and `inventory/uat.yml` for reconfiguration to directly and seamlessly ssh into the uat-webservers as follows
+
 ![Task13](./Images/Task%2013.19.png)
 ![Task13](./Images/Task%2013.20.png)
 
 - Here, I have the expected outcoming
+
 ![Task13](./Images/Task%2013.21.png)
 ![Task13](./Images/Task%2013.22.png)
 ![Task13](./Images/Task%2013.23.png)
