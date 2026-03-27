@@ -1305,4 +1305,4 @@ export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
 ![Task14](./Images/Task%2014.90.png)
 
 ### Congratulations! 
-You have just experienced one of the most interesting and complex projects in you Project Based Learning journey so far.
+You have just experienced one of the most interesting and complex projects in your Project-Based Learning journey so far.
