@@ -3,7 +3,7 @@
 **This document details the provisioning of a LAMP stack (Linux, Apache, MySQL and PHP) on an AWS EC2 instance. The setup process was executed as part of environment configuration, and the screenshots below serve as deployment artifacts, presented in the order they were captured during the stack initialization.**
 
 # Step 0 – Preparing prerequisites
- In order to complete this project, you will need an AWS account and a virtual server with Ubuntu 
+ In order to complete this project, you will need an AWS account and a virtual server with *Ubuntu*
 Server OS. 
 
 - Register an AWS accout if you have none
