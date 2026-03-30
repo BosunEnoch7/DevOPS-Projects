@@ -18,7 +18,7 @@ Otherwise, programming your automation may become frustrating very quickly.
 
 You will build a secure infrastructure inside AWS [VPC (Virtual Private Cloud)](https://en.wikipedia.org/wiki/Amazon_Virtual_Private_Cloud) network for a 
 fictitious company (Choose an interesting name for it) that uses WordPress CMS for its main 
-business website, and a **Tooling Website** (`https://github.com/BosunEnoch7/tooling`) for 
+business website, and a [**Tooling Website**](https://github.com/BosunEnoch7/tooling.git) for 
 their DevOps team. As part of the company’s desire for improved security and performance, a 
 decision has been made to use a [reverse proxy technology from **NGINX**](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) to achieve this. 
 Cost, Security, and Scalability are the major requirements for this project. Hence, implementing 
