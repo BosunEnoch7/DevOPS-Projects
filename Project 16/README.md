@@ -244,6 +244,7 @@ A closer look at cidrsubnet – this function works like an algorithm to dynamic
 - See the output.
 - Keep changing the numbers and see what happens.
 - To get out of the console, type exit.
+
 ![Task16](./Images/Task%2016.26.png)
 
 The final problem to solve is removing hard coded count value.
@@ -452,12 +453,17 @@ You should also have this file structure in the PBL folder.
 ![Task16](./Images/Task%2016.29.png)
 
 - Run `terraform plan` and `terraform apply` and ensure everything works.
+
 ![Task16](./Images/Task%2016.30.png)
+
 I encountered the above error, lets fix.
+
 ![Task16](./Images/Task%2016.31.png)
+
 I ran `terraform init` to re-initiate terraform
 
 - Now Run `terraform plan` and `terraform apply`
+
 ![Task16](./Images/Task%2016.32.png)
 ![Task16](./Images/Task%2016.33.png)
 ![Task16](./Images/Task%2016.34.png)
