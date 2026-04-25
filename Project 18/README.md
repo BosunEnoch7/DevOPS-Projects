@@ -298,6 +298,7 @@ provider "aws" {
 - You can further split the codes into smaller partitions just for clarity.
 
 - In the `provider.tf` file, paste the code below into it
+
 ```python
 terraform {
   required_version = ">= 1.5.0"
